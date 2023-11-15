@@ -1,0 +1,31 @@
+version: "3"
+services:
+  db:
+    image: mysql:8.0
+    container_name: study_db
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD= 1234
+      - MYSQL_DATABASE= dblockstudy
+      - MYSQL_USER= user1
+      - MYSQL_PASSWORD= 1234
+
+  redis:
+    image: redis
+    container_name: study_redis
+    restart: always
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8080:8080"
+    networks:
+      - study-network
+networks:
+  study-network:
